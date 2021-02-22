@@ -12,7 +12,7 @@ import RxCocoa
 class TodoListViewController: UIViewController {
     
     // MARK: - Properties
-
+    
     private let addTaskBarButtonItem: UIBarButtonItem = {
         let barButtonItem = UIBarButtonItem(systemItem: .add)
         barButtonItem.tintColor = .systemRed
@@ -28,20 +28,23 @@ class TodoListViewController: UIViewController {
         return segmentedControl
     }()
     
+    private let taskListTableView = UITableView()
+    
+    private let addTaskVC = AddTaskViewController()
+    
     private var taskList = BehaviorRelay<[Task]>(value: [])
     
     private var filteredTaskList = [Task]()
     
     private let disposeBag = DisposeBag()
     
-    private let taskListTableView = UITableView()
-    
     // MARK: - View Lifecycle
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         configureUI()
+        subscribeToTaskSubject()
     }
      
     // MARK: - Helper Methods
@@ -111,14 +114,9 @@ class TodoListViewController: UIViewController {
         }
     }
     
-    // MARK: - Selector Methods
-
-    @objc private func addTaskTapped() {
-        let addTaskVC = AddTaskViewController()
+    private func subscribeToTaskSubject() {
         addTaskVC.taskSubjectObservable.subscribe(onNext: { [weak self] task in
-            
             guard let self = self else { return }
-            
             var existingTasks = self.taskList.value
             existingTasks.append(task)
             self.taskList.accept(existingTasks)
@@ -127,6 +125,11 @@ class TodoListViewController: UIViewController {
                 self.taskListTableView.reloadData()
             }
         }).disposed(by: disposeBag)
+    }
+    
+    // MARK: - Selector Methods
+    
+    @objc private func addTaskTapped() {
         addTaskVC.modalPresentationStyle = .fullScreen
         present(addTaskVC, animated: true, completion: nil)
     }
@@ -138,7 +141,6 @@ class TodoListViewController: UIViewController {
             self.taskListTableView.reloadData()
         }
     }
-    
 }
 
 // MARK: - UITableViewDelegate
@@ -154,7 +156,6 @@ extension TodoListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 40
     }
-    
 }
 
 // MARK: - UITableViewDataSource
@@ -174,5 +175,4 @@ extension TodoListViewController: UITableViewDataSource {
         cell.title = filteredTaskList[indexPath.row].title
         return cell
     }
-    
 }
