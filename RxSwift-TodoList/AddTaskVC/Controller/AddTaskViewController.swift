@@ -122,10 +122,18 @@ class AddTaskViewController: UIViewController {
         inputTaskTextField.centerXAnchor.constraint(equalTo: prioritySegementedControl.centerXAnchor).isActive = true
     }
     
+    private func resetInputFields() {
+        inputTaskTextField.text = ""
+        doneButton.isEnabled = false
+    }
+    
     // MARK: - Selector Methods
     
     @objc private func cancelPressed() {
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true) { [weak self] in
+            guard let self = self else { return }
+            self.resetInputFields()
+        }
     }
     
     @objc private func donePressed() {
@@ -133,17 +141,20 @@ class AddTaskViewController: UIViewController {
         
         let task = Task(title: title, priority: priority)
         taskSubject.onNext(task)
-        dismiss(animated: true, completion: nil)
+        
+        dismiss(animated: true) { [weak self] in
+            guard let self = self else { return }
+            self.resetInputFields()
+        }
     }
     
     @objc private func handleTextField() {
-        if inputTaskTextField.text != nil {
+        if inputTaskTextField.text?.isEmpty == false {
             doneButton.isEnabled = true
         } else {
             doneButton.isEnabled = false
         }
     }
-    
 }
 
 // MARK: - UITextFieldDelegate
