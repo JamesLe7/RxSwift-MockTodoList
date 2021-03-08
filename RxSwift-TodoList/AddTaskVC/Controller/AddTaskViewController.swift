@@ -149,7 +149,7 @@ class AddTaskViewController: UIViewController {
     }
     
     @objc private func handleTextField() {
-        if inputTaskTextField.text?.isEmpty == false {
+        if inputTaskTextField.text?.isReallyEmpty == false {
             doneButton.isEnabled = true
         } else {
             doneButton.isEnabled = false

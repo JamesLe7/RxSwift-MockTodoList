@@ -10,6 +10,7 @@
 		0D334EAF25648A33000E3337 /* AddTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D334EAE25648A33000E3337 /* AddTaskViewController.swift */; };
 		0D334EB325648CB8000E3337 /* TaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D334EB225648CB8000E3337 /* TaskCell.swift */; };
 		0D334EB625648D0B000E3337 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D334EB525648D0B000E3337 /* Constants.swift */; };
+		0D43B98425F6B9610027CD0D /* String+IsReallyEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D43B98325F6B9610027CD0D /* String+IsReallyEmpty.swift */; };
 		0DB5D95D2566E26E006AAE07 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB5D95C2566E26E006AAE07 /* Task.swift */; };
 		0DC5952925634D2F009348B3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC5952825634D2F009348B3 /* AppDelegate.swift */; };
 		0DC5952B25634D2F009348B3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC5952A25634D2F009348B3 /* SceneDelegate.swift */; };
@@ -24,6 +25,7 @@
 		0D334EAE25648A33000E3337 /* AddTaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskViewController.swift; sourceTree = "<group>"; };
 		0D334EB225648CB8000E3337 /* TaskCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCell.swift; sourceTree = "<group>"; };
 		0D334EB525648D0B000E3337 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		0D43B98325F6B9610027CD0D /* String+IsReallyEmpty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+IsReallyEmpty.swift"; sourceTree = "<group>"; };
 		0DB5D95C2566E26E006AAE07 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		0DC5952525634D2F009348B3 /* RxSwift-TodoList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RxSwift-TodoList.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0DC5952825634D2F009348B3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -64,6 +66,14 @@
 				0D334EAE25648A33000E3337 /* AddTaskViewController.swift */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		0D43B97E25F6B8D60027CD0D /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				0D43B98325F6B9610027CD0D /* String+IsReallyEmpty.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		0DB5D95B2566E22A006AAE07 /* Models */ = {
@@ -125,6 +135,7 @@
 				0DC5952825634D2F009348B3 /* AppDelegate.swift */,
 				0DC5952A25634D2F009348B3 /* SceneDelegate.swift */,
 				0D334EB525648D0B000E3337 /* Constants.swift */,
+				0D43B97E25F6B8D60027CD0D /* Extensions */,
 				0DB85E1A2564559C00DEAC6D /* TodoListVC */,
 				0D334EAC256489E5000E3337 /* AddTaskVC */,
 				0DC5953125634D30009348B3 /* Assets.xcassets */,
@@ -270,6 +281,7 @@
 				0DE72B942565B32E0006C4C6 /* TaskListTableViewHeader.swift in Sources */,
 				0DC5952925634D2F009348B3 /* AppDelegate.swift in Sources */,
 				0DC5952B25634D2F009348B3 /* SceneDelegate.swift in Sources */,
+				0D43B98425F6B9610027CD0D /* String+IsReallyEmpty.swift in Sources */,
 				0D334EB325648CB8000E3337 /* TaskCell.swift in Sources */,
 				0D334EB625648D0B000E3337 /* Constants.swift in Sources */,
 			);
