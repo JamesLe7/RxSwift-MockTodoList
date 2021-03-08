@@ -77,7 +77,7 @@
 		0DB85E1A2564559C00DEAC6D /* TodoListVC */ = {
 			isa = PBXGroup;
 			children = (
-				0DB85E1D256455D800DEAC6D /* Models */,
+				0DB5D95B2566E22A006AAE07 /* Models */,
 				0DB85E1C256455D100DEAC6D /* Views */,
 				0DB85E1B256455C600DEAC6D /* Controller */,
 			);
@@ -99,13 +99,6 @@
 				0DE72B932565B32E0006C4C6 /* TaskListTableViewHeader.swift */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		0DB85E1D256455D800DEAC6D /* Models */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Models;
 			sourceTree = "<group>";
 		};
 		0DC5951C25634D2F009348B3 = {
@@ -132,7 +125,6 @@
 				0DC5952825634D2F009348B3 /* AppDelegate.swift */,
 				0DC5952A25634D2F009348B3 /* SceneDelegate.swift */,
 				0D334EB525648D0B000E3337 /* Constants.swift */,
-				0DB5D95B2566E22A006AAE07 /* Models */,
 				0DB85E1A2564559C00DEAC6D /* TodoListVC */,
 				0D334EAC256489E5000E3337 /* AddTaskVC */,
 				0DC5953125634D30009348B3 /* Assets.xcassets */,
