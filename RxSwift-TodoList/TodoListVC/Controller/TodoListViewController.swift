@@ -83,6 +83,9 @@ class TodoListViewController: UIViewController {
         taskListTableView.dataSource = self
         taskListTableView.register(TaskCell.self, forCellReuseIdentifier: K.taskCellReuseIdentifier)
         taskListTableView.backgroundColor = .white
+        taskListTableView.rowHeight = 35
+        taskListTableView.sectionHeaderHeight = 40
+        taskListTableView.isOpaque = true
         
         taskListTableView.translatesAutoresizingMaskIntoConstraints = false
         taskListTableView.topAnchor.constraint(equalTo: prioritySegementedControl.bottomAnchor, constant: 15).isActive = true
@@ -152,10 +155,6 @@ extension TodoListViewController: UITableViewDelegate {
         header.title = getTableViewHeaderTitle()
         return header
     }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 40
-    }
 }
 
 // MARK: - UITableViewDataSource
@@ -174,5 +173,9 @@ extension TodoListViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: K.taskCellReuseIdentifier, for: indexPath) as! TaskCell
         cell.title = filteredTaskList[indexPath.row].title
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        taskListTableView.deselectRow(at: indexPath, animated: true)
     }
 }
