@@ -104,7 +104,7 @@ class TodoListViewController: UIViewController {
         }
     }
     
-    private func filterTasks(by priority: Priority?) {
+    private func filterTasks(by priority: TaskPriority?) {
         if priority == nil {
             filteredTaskList = taskList.value
         } else {
@@ -123,7 +123,7 @@ class TodoListViewController: UIViewController {
             var existingTasks = self.taskList.value
             existingTasks.append(task)
             self.taskList.accept(existingTasks)
-            self.filterTasks(by: Priority(rawValue: self.prioritySegementedControl.selectedSegmentIndex - 1))
+            self.filterTasks(by: TaskPriority(rawValue: self.prioritySegementedControl.selectedSegmentIndex - 1))
             DispatchQueue.main.async {
                 self.taskListTableView.reloadData()
             }
@@ -138,7 +138,7 @@ class TodoListViewController: UIViewController {
     }
     
     @objc private func segmentedControlTapped() {
-        filterTasks(by: Priority(rawValue: (prioritySegementedControl.selectedSegmentIndex - 1)))
+        filterTasks(by: TaskPriority(rawValue: (prioritySegementedControl.selectedSegmentIndex - 1)))
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             self.taskListTableView.reloadData()

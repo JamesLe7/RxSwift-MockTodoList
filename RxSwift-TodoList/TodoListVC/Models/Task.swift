@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Priority: Int {
+enum TaskPriority: Int, CaseIterable {
     case high = 0
     case medium
     case low
@@ -15,5 +15,5 @@ enum Priority: Int {
 
 struct Task {
     let title: String
-    let priority: Priority
+    let priority: TaskPriority
 }

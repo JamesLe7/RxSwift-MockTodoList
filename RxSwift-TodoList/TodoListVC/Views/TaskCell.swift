@@ -30,19 +30,16 @@ class TaskCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        configureCell()
+      contentView.addSubview(taskTitleLabel)
+      NSLayoutConstraint.activate([
+        taskTitleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
+        taskTitleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+        taskTitleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
+        taskTitleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10)
+      ])
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    // MARK: - Helper Methods
-
-    private func configureCell() {
-        addSubview(taskTitleLabel)
-        taskTitleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10).isActive = true
-        taskTitleLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-    }
-    
 }

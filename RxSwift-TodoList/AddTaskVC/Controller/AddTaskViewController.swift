@@ -137,8 +137,8 @@ class AddTaskViewController: UIViewController {
     }
     
     @objc private func donePressed() {
-        if let title = inputTaskTextField.text, let priority = Priority(rawValue: prioritySegementedControl.selectedSegmentIndex) {
-            
+        if let title = inputTaskTextField.text, let priority = TaskPriority(rawValue: prioritySegementedControl.selectedSegmentIndex) {
+
             let task = Task(title: title, priority: priority)
             taskSubject.onNext(task)
             
