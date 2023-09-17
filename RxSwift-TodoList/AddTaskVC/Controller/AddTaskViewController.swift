@@ -131,7 +131,7 @@ class AddTaskViewController: UIViewController {
     
     @objc private func cancelPressed() {
         dismiss(animated: true) { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
             self.resetInputFields()
         }
     }
