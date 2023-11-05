@@ -7,13 +7,26 @@
 
 import Foundation
 
-enum TaskPriority: Int, CaseIterable {
-    case high = 0
-    case medium
-    case low
+enum TaskPriority: String, Equatable, CaseIterable {
+  case high = "High"
+  case medium = "Medium"
+  case low = "Low"
+  
+  init?(priorityIndex: Int) {
+    switch priorityIndex {
+    case 0:
+      self = .high
+    case 1:
+      self = .medium
+    case 2:
+      self = .low
+    default:
+      return nil
+    }
+  }
 }
 
-struct Task {
-    let title: String
-    let priority: TaskPriority
+struct Task: Equatable {
+  let title: String
+  let priority: TaskPriority
 }

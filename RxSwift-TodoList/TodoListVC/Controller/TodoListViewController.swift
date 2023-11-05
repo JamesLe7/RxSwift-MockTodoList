@@ -9,173 +9,131 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class TodoListViewController: UIViewController {
-    
-    // MARK: - Properties
-    
-    private let addTaskBarButtonItem: UIBarButtonItem = {
-        let barButtonItem = UIBarButtonItem(systemItem: .add)
-        barButtonItem.tintColor = .systemRed
-        return barButtonItem
-    }()
-    
-    private let prioritySegementedControl: UISegmentedControl = {
-        let segmentedControl = UISegmentedControl(items: ["All","High","Medium","Low"])
-        segmentedControl.backgroundColor = .systemGray5
-        segmentedControl.setTitleTextAttributes([NSAttributedString.Key.foregroundColor : UIColor.systemRed], for: .normal)
-        segmentedControl.selectedSegmentIndex = 0
-        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
-        return segmentedControl
-    }()
-    
-    private let taskListTableView = UITableView()
-    
-    private let addTaskVC = AddTaskViewController()
-    
-    private var taskList = BehaviorRelay<[Task]>(value: [])
-    
-    private var filteredTaskList = [Task]()
-    
-    private let disposeBag = DisposeBag()
-    
-    // MARK: - View Lifecycle
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        configureUI()
-        subscribeToTaskSubject()
-    }
-     
-    // MARK: - Helper Methods
+final class TodoListViewController: UIViewController {
 
-    private func configureUI() {
-        configureNavBarUI()
-        configureViewController()
-        configureSegementedControl()
-        configureTableView()
-    }
+  // MARK: - Properties
+  private let addTaskBarButton = UIBarButtonItem(systemItem: .add)
+  
+  private let segmentControlContainerView = UIView()
+  
+  private var prioritySegmentedControl = UISegmentedControl()
+
+  private let listTableView = UITableView()
+  
+  private let viewModel = TodoListViewModel()
+  
+  private let disposeBag = DisposeBag()
+  
+  // MARK: - View Lifecycle
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
     
-    private func configureNavBarUI() {
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.systemRed]
-        
-        addTaskBarButtonItem.target = self
-        addTaskBarButtonItem.action = #selector(addTaskTapped)
-        navigationItem.rightBarButtonItem = addTaskBarButtonItem
-    }
+    title = "Todo-List"
+    view.backgroundColor = .white
     
-    private func configureViewController() {
-        title = "Todo-List"
-        view.backgroundColor = .white
+    navigationController?.navigationBar.prefersLargeTitles = true
+    navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.systemRed]
+
+    addTaskBarButton.tintColor = .systemRed
+    addTaskBarButton.target = self
+    addTaskBarButton.action = #selector(addTaskTapped)
+    navigationItem.rightBarButtonItem = addTaskBarButton
+
+    for (index, value) in viewModel.segmentControlTitles().enumerated() {
+      prioritySegmentedControl.insertSegment(withTitle: value, at: index, animated: false)
     }
+    prioritySegmentedControl.backgroundColor = .systemGray5
+    prioritySegmentedControl.selectedSegmentIndex = 0
+    prioritySegmentedControl.setTitleTextAttributes([NSAttributedString.Key.foregroundColor : UIColor.systemRed], for: .normal)
+    prioritySegmentedControl.addTarget(self, action: #selector(segmentedControlTapped), for: .valueChanged)
+    segmentControlContainerView.translatesAutoresizingMaskIntoConstraints = false
+    prioritySegmentedControl.translatesAutoresizingMaskIntoConstraints = false
     
-    private func configureSegementedControl() {
-        view.addSubview(prioritySegementedControl)
-        prioritySegementedControl.addTarget(self, action: #selector(segmentedControlTapped), for: .valueChanged)
-        prioritySegementedControl.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 15).isActive = true
-        prioritySegementedControl.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+    listTableView.delegate = self
+    listTableView.dataSource = self
+    listTableView.register(TaskCell.self, forCellReuseIdentifier: TaskCell.reuseIdentifier)
+    listTableView.backgroundColor = .white
+    listTableView.translatesAutoresizingMaskIntoConstraints = false
+    
+    segmentControlContainerView.addSubview(prioritySegmentedControl)
+    view.addSubview(segmentControlContainerView)
+    view.addSubview(listTableView)
+
+    NSLayoutConstraint.activate([
+      segmentControlContainerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+      segmentControlContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+      segmentControlContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+      
+      prioritySegmentedControl.topAnchor.constraint(equalTo: segmentControlContainerView.topAnchor, constant: 8),
+      prioritySegmentedControl.leadingAnchor.constraint(equalTo: segmentControlContainerView.leadingAnchor, constant: 16),
+      prioritySegmentedControl.trailingAnchor.constraint(equalTo: segmentControlContainerView.trailingAnchor, constant: -16),
+      prioritySegmentedControl.bottomAnchor.constraint(equalTo: segmentControlContainerView.bottomAnchor, constant: -8),
+      prioritySegmentedControl.heightAnchor.constraint(equalToConstant: 25),
+      
+      listTableView.topAnchor.constraint(equalTo: segmentControlContainerView.bottomAnchor),
+      listTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+      listTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+      listTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+    ])
+  }
+  
+  // MARK: - Helper Methods
+  private func reloadTableView() {
+    DispatchQueue.main.async { [weak self] in
+      guard let self else { return }
+      self.listTableView.reloadData()
     }
+  }
+  
+  // MARK: - Selector Methods
+  @objc private func segmentedControlTapped() {
+    viewModel.filterTasks(prioritySegmentSelected: prioritySegmentedControl.selectedSegmentIndex)
+    reloadTableView()
+  }
+
+  @objc private func addTaskTapped() {
+    let addTaskVC = AddTaskViewController()
     
-    private func configureTableView() {
-        view.addSubview(taskListTableView)
-        taskListTableView.delegate = self
-        taskListTableView.dataSource = self
-        taskListTableView.register(TaskCell.self, forCellReuseIdentifier: K.taskCellReuseIdentifier)
-        taskListTableView.backgroundColor = .white
-        taskListTableView.rowHeight = 35
-        taskListTableView.sectionHeaderHeight = 40
-        taskListTableView.isOpaque = true
-        
-        taskListTableView.translatesAutoresizingMaskIntoConstraints = false
-        taskListTableView.topAnchor.constraint(equalTo: prioritySegementedControl.bottomAnchor, constant: 15).isActive = true
-        taskListTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        taskListTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        taskListTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-    }
+    addTaskVC.taskSubjectObservable.subscribe(onNext: { [weak self] task in
+      guard let self else { return }
+      self.viewModel.addTask(task)
+      self.prioritySegmentedControl.resetSelectedSegment()
+      self.reloadTableView()
+    }).disposed(by: disposeBag)
     
-    private func getTableViewHeaderTitle() -> String {
-        switch prioritySegementedControl.selectedSegmentIndex {
-        case 0: return "All"
-        case 1: return "High"
-        case 2: return "Medium"
-        case 3: return "Low"
-        default: return "All"
-        }
-    }
-    
-    private func filterTasks(by priority: TaskPriority?) {
-        if priority == nil {
-            filteredTaskList = taskList.value
-        } else {
-            self.taskList.map({ tasks in
-                return tasks.filter({ $0.priority == priority! })
-            }).subscribe(onNext: { [weak self] tasks in
-                guard let self = self else { return }
-                self.filteredTaskList = tasks
-            }).disposed(by: disposeBag)
-        }
-    }
-    
-    private func subscribeToTaskSubject() {
-        addTaskVC.taskSubjectObservable.subscribe(onNext: { [weak self] task in
-            guard let self = self else { return }
-            var existingTasks = self.taskList.value
-            existingTasks.append(task)
-            self.taskList.accept(existingTasks)
-            self.filterTasks(by: TaskPriority(rawValue: self.prioritySegementedControl.selectedSegmentIndex - 1))
-            DispatchQueue.main.async {
-                self.taskListTableView.reloadData()
-            }
-        }).disposed(by: disposeBag)
-    }
-    
-    // MARK: - Selector Methods
-    
-    @objc private func addTaskTapped() {
-        addTaskVC.modalPresentationStyle = .fullScreen
-        present(addTaskVC, animated: true, completion: nil)
-    }
-    
-    @objc private func segmentedControlTapped() {
-        filterTasks(by: TaskPriority(rawValue: (prioritySegementedControl.selectedSegmentIndex - 1)))
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            self.taskListTableView.reloadData()
-        }
-    }
+    present(addTaskVC, animated: true, completion: nil)
+  }
 }
 
 // MARK: - UITableViewDelegate
-
 extension TodoListViewController: UITableViewDelegate {
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let header = TaskListTableViewHeader()
-        header.title = getTableViewHeaderTitle()
-        return header
-    }
+  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    let header = TodoListPriorityHeader()
+    header.title = viewModel.getSegmentControlTitle(
+      for: prioritySegmentedControl.selectedSegmentIndex
+    )
+    return header
+  }
 }
 
 // MARK: - UITableViewDataSource
-
 extension TodoListViewController: UITableViewDataSource {
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return filteredTaskList.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: K.taskCellReuseIdentifier, for: indexPath) as! TaskCell
-        cell.title = filteredTaskList[indexPath.row].title
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        taskListTableView.deselectRow(at: indexPath, animated: true)
-    }
+  func numberOfSections(in tableView: UITableView) -> Int {
+    return viewModel.numberSections()
+  }
+  
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return viewModel.numberOfRowsForSection(section)
+  }
+  
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCell(withIdentifier: TaskCell.reuseIdentifier, for: indexPath) as! TaskCell
+    cell.title = viewModel.titleForRow(indexPath.row)
+    return cell
+  }
+  
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    tableView.deselectRow(at: indexPath, animated: true)
+  }
 }
