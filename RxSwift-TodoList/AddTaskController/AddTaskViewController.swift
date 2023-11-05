@@ -12,22 +12,9 @@ class AddTaskViewController: UIViewController {
   
   // MARK: - Properties
   
-  private let cancelButton: UIButton = {
-    let button = UIButton(type: .system)
-    button.setTitle("Cancel", for: .normal)
-    button.tintColor = .systemRed
-    button.translatesAutoresizingMaskIntoConstraints = false
-    return button
-  }()
+  private let cancelButton = ModalNavBarButton(title: "Cancel")
   
-  private let doneButton: UIButton = {
-    let button = UIButton(type: .system)
-    button.setTitle("Done", for: .normal)
-    button.isEnabled = false
-    button.tintColor = .systemRed
-    button.translatesAutoresizingMaskIntoConstraints = false
-    return button
-  }()
+  private let doneButton = ModalNavBarButton(title: "Done")
   
   private let prioritySegementedControl: UISegmentedControl = {
     let segmentedControl = UISegmentedControl(items: TaskPriority.allCases.map { $0.rawValue })
@@ -76,7 +63,11 @@ class AddTaskViewController: UIViewController {
     view.backgroundColor = .white
     
     cancelButton.addTarget(self, action: #selector(cancelPressed), for: .touchUpInside)
+    cancelButton.translatesAutoresizingMaskIntoConstraints = false
+    
+    doneButton.isEnabled = false
     doneButton.addTarget(self, action: #selector(donePressed), for: .touchUpInside)
+    doneButton.translatesAutoresizingMaskIntoConstraints = false
     
     inputTaskTextField.delegate = self
     inputTaskTextField.addTarget(self,action: #selector(validateTextField), for: .editingChanged)
