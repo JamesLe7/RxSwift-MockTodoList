@@ -20,9 +20,22 @@ final class TodoListViewController: UIViewController {
 
   private let listTableView = UITableView()
   
-  private let viewModel = TodoListViewModel()
+  private let viewModel: TodoListViewModel
   
   private let disposeBag = DisposeBag()
+  
+  init(viewModel: TodoListViewModel = TodoListViewModel()) {
+    self.viewModel = viewModel
+    super.init(nibName: nil, bundle: nil)
+    
+    viewModel.filteredTaskList.subscribe(onNext: { [weak self] _ in
+      self?.reloadTableView()
+    }).disposed(by: disposeBag)
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
   
   // MARK: - View Lifecycle
   
@@ -89,7 +102,6 @@ final class TodoListViewController: UIViewController {
   // MARK: - Selector Methods
   @objc private func segmentedControlTapped() {
     viewModel.filterTasks(prioritySegmentSelected: prioritySegmentedControl.selectedSegmentIndex)
-    reloadTableView()
   }
 
   @objc private func addTaskTapped() {

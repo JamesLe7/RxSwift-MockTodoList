@@ -11,11 +11,12 @@ import RxSwift
 
 final class TodoListViewModel {
 
-  private var tasks: [Task] = []
-  private var filteredTaskList: BehaviorRelay<[Task]>
+  private var tasks: [Task]
+  private(set) var filteredTaskList: BehaviorRelay<[Task]>
   private let segmentedControlTitles = ["All"] + TaskPriority.allCases.map { $0.rawValue }
   
-  init() {
+  init(tasks: [Task] = []) {
+    self.tasks = tasks
     filteredTaskList = BehaviorRelay(value: tasks)
   }
   
