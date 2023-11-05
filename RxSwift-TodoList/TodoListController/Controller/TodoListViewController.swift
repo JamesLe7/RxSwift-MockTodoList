@@ -111,7 +111,6 @@ final class TodoListViewController: UIViewController {
       guard let self else { return }
       self.viewModel.addTask(task)
       self.prioritySegmentedControl.resetSelectedSegment()
-      self.reloadTableView()
     }).disposed(by: disposeBag)
     
     present(addTaskVC, animated: true, completion: nil)
