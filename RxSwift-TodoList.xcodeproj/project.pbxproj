@@ -54,12 +54,12 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0D334EAC256489E5000E3337 /* AddTaskVC */ = {
+		0D334EAC256489E5000E3337 /* AddTaskController */ = {
 			isa = PBXGroup;
 			children = (
 				0D334EAD25648A22000E3337 /* Controller */,
 			);
-			path = AddTaskVC;
+			path = AddTaskController;
 			sourceTree = "<group>";
 		};
 		0D334EAD25648A22000E3337 /* Controller */ = {
@@ -87,7 +87,7 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		0DB85E1A2564559C00DEAC6D /* TodoListVC */ = {
+		0DB85E1A2564559C00DEAC6D /* TodoListController */ = {
 			isa = PBXGroup;
 			children = (
 				0DB5D95B2566E22A006AAE07 /* Models */,
@@ -95,7 +95,7 @@
 				ED527D332AB6A1F000B8CCB0 /* ViewModel */,
 				0DB85E1B256455C600DEAC6D /* Controller */,
 			);
-			path = TodoListVC;
+			path = TodoListController;
 			sourceTree = "<group>";
 		};
 		0DB85E1B256455C600DEAC6D /* Controller */ = {
@@ -139,8 +139,8 @@
 				0DC5952825634D2F009348B3 /* AppDelegate.swift */,
 				0DC5952A25634D2F009348B3 /* SceneDelegate.swift */,
 				0D43B97E25F6B8D60027CD0D /* Extensions */,
-				0DB85E1A2564559C00DEAC6D /* TodoListVC */,
-				0D334EAC256489E5000E3337 /* AddTaskVC */,
+				0DB85E1A2564559C00DEAC6D /* TodoListController */,
+				0D334EAC256489E5000E3337 /* AddTaskController */,
 				0DC5953125634D30009348B3 /* Assets.xcassets */,
 				0DC5953325634D30009348B3 /* LaunchScreen.storyboard */,
 				0DC5953625634D30009348B3 /* Info.plist */,
