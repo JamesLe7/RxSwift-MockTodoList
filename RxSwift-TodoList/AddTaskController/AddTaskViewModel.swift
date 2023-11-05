@@ -15,6 +15,10 @@ final class AddTaskViewModel {
   private let segmentedControlTitles = TaskPriority.segmentedControlTitles
   
   init() {}
+  
+  func getSegementedControlTitles() -> [String] {
+    return segmentedControlTitles
+  }
 
   func getTaskPriority(for segmentIndex: Int) -> TaskPriority? {
     guard segmentIndex >= 0 && segmentIndex < segmentedControlTitles.count else {
