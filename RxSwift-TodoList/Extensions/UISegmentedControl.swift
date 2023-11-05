@@ -8,7 +8,7 @@
 import UIKit
 
 extension UISegmentedControl {
-  func resetSelectedSegment() {
+  func resetSelectedSegmentToFirstIndex() {
     selectedSegmentIndex = 0
   }
 }

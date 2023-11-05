@@ -33,7 +33,7 @@ class AddTaskViewController: UIViewController {
     let segmentedControl = UISegmentedControl(items: TaskPriority.allCases.map { $0.rawValue })
     segmentedControl.backgroundColor = .systemGray5
     segmentedControl.setTitleTextAttributes([NSAttributedString.Key.foregroundColor : UIColor.systemRed], for: .normal)
-    segmentedControl.selectedSegmentIndex = 0
+    segmentedControl.resetSelectedSegmentToFirstIndex()
     segmentedControl.translatesAutoresizingMaskIntoConstraints = false
     return segmentedControl
   }()
@@ -50,10 +50,21 @@ class AddTaskViewController: UIViewController {
     return textField
   }()
   
+  private let viewModel: AddTaskViewModel
+  
   private let taskSubject = PublishSubject<Task>()
   
   var taskSubjectObservable: Observable<Task> {
     return taskSubject.asObservable()
+  }
+  
+  init(viewModel: AddTaskViewModel = AddTaskViewModel()) {
+    self.viewModel = viewModel
+    super.init(nibName: nil, bundle: nil)
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
   
   // MARK: - View Lifecycle
@@ -61,7 +72,7 @@ class AddTaskViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    title = "Add Task"
+    title = viewModel.title
     view.backgroundColor = .white
     cancelButton.addTarget(self, action: #selector(cancelPressed), for: .touchUpInside)
     doneButton.addTarget(self, action: #selector(donePressed), for: .touchUpInside)
@@ -118,8 +129,8 @@ class AddTaskViewController: UIViewController {
   
   @objc private func donePressed() {
     guard let title = inputTaskTextField.text,
-          let priority = TaskPriority(priorityIndex: prioritySegementedControl.selectedSegmentIndex) else { return }
-    
+          let priority = viewModel.getTaskPriority(for: prioritySegementedControl.selectedSegmentIndex) else { return }
+
     taskSubject.onNext(Task(title: title, priority: priority))
     
     dismiss(animated: true) { [weak self] in

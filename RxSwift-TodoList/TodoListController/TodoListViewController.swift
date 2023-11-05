@@ -16,7 +16,7 @@ final class TodoListViewController: UIViewController {
   
   private let segmentControlContainerView = UIView()
   
-  private var prioritySegmentedControl = UISegmentedControl()
+  private var prioritySegmentedControl: UISegmentedControl
 
   private let listTableView = UITableView()
   
@@ -26,6 +26,7 @@ final class TodoListViewController: UIViewController {
   
   init(viewModel: TodoListViewModel = TodoListViewModel()) {
     self.viewModel = viewModel
+    self.prioritySegmentedControl = UISegmentedControl(items: viewModel.segmentControlTitles())
     super.init(nibName: nil, bundle: nil)
     
     viewModel.filteredTaskList.subscribe(onNext: { [weak self] _ in
@@ -42,7 +43,7 @@ final class TodoListViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    title = "Todo-List"
+    title = viewModel.title
     view.backgroundColor = .white
     
     navigationController?.navigationBar.prefersLargeTitles = true
@@ -53,11 +54,8 @@ final class TodoListViewController: UIViewController {
     addTaskBarButton.action = #selector(addTaskTapped)
     navigationItem.rightBarButtonItem = addTaskBarButton
 
-    for (index, value) in viewModel.segmentControlTitles().enumerated() {
-      prioritySegmentedControl.insertSegment(withTitle: value, at: index, animated: false)
-    }
     prioritySegmentedControl.backgroundColor = .systemGray5
-    prioritySegmentedControl.selectedSegmentIndex = 0
+    prioritySegmentedControl.resetSelectedSegmentToFirstIndex()
     prioritySegmentedControl.setTitleTextAttributes([NSAttributedString.Key.foregroundColor : UIColor.systemRed], for: .normal)
     prioritySegmentedControl.addTarget(self, action: #selector(segmentedControlTapped), for: .valueChanged)
     segmentControlContainerView.translatesAutoresizingMaskIntoConstraints = false
@@ -106,11 +104,11 @@ final class TodoListViewController: UIViewController {
 
   @objc private func addTaskTapped() {
     let addTaskVC = AddTaskViewController()
-    
+
     addTaskVC.taskSubjectObservable.subscribe(onNext: { [weak self] task in
       guard let self else { return }
       self.viewModel.addTask(task)
-      self.prioritySegmentedControl.resetSelectedSegment()
+      self.prioritySegmentedControl.resetSelectedSegmentToFirstIndex()
     }).disposed(by: disposeBag)
     
     present(addTaskVC, animated: true, completion: nil)

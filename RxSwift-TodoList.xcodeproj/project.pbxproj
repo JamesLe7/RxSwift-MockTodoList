@@ -20,6 +20,7 @@
 		B5A942285F6F3F5E72E3F733 /* Pods_RxSwift_TodoList.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61554779160552E5915873BB /* Pods_RxSwift_TodoList.framework */; };
 		ED527D322AB6A1EA00B8CCB0 /* TodoListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED527D312AB6A1EA00B8CCB0 /* TodoListViewModel.swift */; };
 		EDCB8E892AF742DD00DB2951 /* UISegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDCB8E882AF742DD00DB2951 /* UISegmentedControl.swift */; };
+		EDCB8E8B2AF759D100DB2951 /* AddTaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDCB8E8A2AF759D100DB2951 /* AddTaskViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		B8B86738EF1397CD8347D129 /* Pods-RxSwift-TodoList.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxSwift-TodoList.debug.xcconfig"; path = "Target Support Files/Pods-RxSwift-TodoList/Pods-RxSwift-TodoList.debug.xcconfig"; sourceTree = "<group>"; };
 		ED527D312AB6A1EA00B8CCB0 /* TodoListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListViewModel.swift; sourceTree = "<group>"; };
 		EDCB8E882AF742DD00DB2951 /* UISegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISegmentedControl.swift; sourceTree = "<group>"; };
+		EDCB8E8A2AF759D100DB2951 /* AddTaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,17 +59,10 @@
 		0D334EAC256489E5000E3337 /* AddTaskController */ = {
 			isa = PBXGroup;
 			children = (
-				0D334EAD25648A22000E3337 /* Controller */,
+				0D334EAE25648A33000E3337 /* AddTaskViewController.swift */,
+				EDCB8E8A2AF759D100DB2951 /* AddTaskViewModel.swift */,
 			);
 			path = AddTaskController;
-			sourceTree = "<group>";
-		};
-		0D334EAD25648A22000E3337 /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-				0D334EAE25648A33000E3337 /* AddTaskViewController.swift */,
-			);
-			path = Controller;
 			sourceTree = "<group>";
 		};
 		0D43B97E25F6B8D60027CD0D /* Extensions */ = {
@@ -79,40 +74,24 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		0DB5D95B2566E22A006AAE07 /* Models */ = {
+		0DB5D95B2566E22A006AAE07 /* Data Models */ = {
 			isa = PBXGroup;
 			children = (
 				0DB5D95C2566E26E006AAE07 /* Task.swift */,
 			);
-			path = Models;
+			path = "Data Models";
 			sourceTree = "<group>";
 		};
 		0DB85E1A2564559C00DEAC6D /* TodoListController */ = {
 			isa = PBXGroup;
 			children = (
-				0DB5D95B2566E22A006AAE07 /* Models */,
-				0DB85E1C256455D100DEAC6D /* Views */,
-				ED527D332AB6A1F000B8CCB0 /* ViewModel */,
-				0DB85E1B256455C600DEAC6D /* Controller */,
-			);
-			path = TodoListController;
-			sourceTree = "<group>";
-		};
-		0DB85E1B256455C600DEAC6D /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-				0DC5952C25634D2F009348B3 /* TodoListViewController.swift */,
-			);
-			path = Controller;
-			sourceTree = "<group>";
-		};
-		0DB85E1C256455D100DEAC6D /* Views */ = {
-			isa = PBXGroup;
-			children = (
+				0DB5D95B2566E22A006AAE07 /* Data Models */,
 				0D334EB225648CB8000E3337 /* TaskCell.swift */,
 				0DE72B932565B32E0006C4C6 /* TaskListTableViewHeader.swift */,
+				0DC5952C25634D2F009348B3 /* TodoListViewController.swift */,
+				ED527D312AB6A1EA00B8CCB0 /* TodoListViewModel.swift */,
 			);
-			path = Views;
+			path = TodoListController;
 			sourceTree = "<group>";
 		};
 		0DC5951C25634D2F009348B3 = {
@@ -163,14 +142,6 @@
 				8B923810D43DC08C1ABDB053 /* Pods-RxSwift-TodoList.release.xcconfig */,
 			);
 			path = Pods;
-			sourceTree = "<group>";
-		};
-		ED527D332AB6A1F000B8CCB0 /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				ED527D312AB6A1EA00B8CCB0 /* TodoListViewModel.swift */,
-			);
-			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -293,6 +264,7 @@
 				0DE72B942565B32E0006C4C6 /* TaskListTableViewHeader.swift in Sources */,
 				ED527D322AB6A1EA00B8CCB0 /* TodoListViewModel.swift in Sources */,
 				0DC5952925634D2F009348B3 /* AppDelegate.swift in Sources */,
+				EDCB8E8B2AF759D100DB2951 /* AddTaskViewModel.swift in Sources */,
 				0DC5952B25634D2F009348B3 /* SceneDelegate.swift in Sources */,
 				0D43B98425F6B9610027CD0D /* String.swift in Sources */,
 				0D334EB325648CB8000E3337 /* TaskCell.swift in Sources */,

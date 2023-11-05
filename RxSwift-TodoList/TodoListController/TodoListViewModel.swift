@@ -11,9 +11,10 @@ import RxSwift
 
 final class TodoListViewModel {
 
+  let title = "Todo-List"
   private var tasks: [Task]
   private(set) var filteredTaskList: BehaviorRelay<[Task]>
-  private let segmentedControlTitles = ["All"] + TaskPriority.allCases.map { $0.rawValue }
+  private let segmentedControlTitles = ["All"] + TaskPriority.segmentedControlTitles
   
   init(tasks: [Task] = []) {
     self.tasks = tasks
@@ -37,7 +38,8 @@ final class TodoListViewModel {
   }
   
   func filterTasks(prioritySegmentSelected: Int) {
-    guard let priority = TaskPriority(priorityIndex: prioritySegmentSelected) else {
+    guard let priorityTitle = getSegmentControlTitle(for: prioritySegmentSelected),
+          let priority = TaskPriority(rawValue: priorityTitle) else {
       filteredTaskList.accept(tasks)
       return
     }
