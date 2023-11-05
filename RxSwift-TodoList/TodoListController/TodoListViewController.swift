@@ -16,7 +16,7 @@ final class TodoListViewController: UIViewController {
   
   private let segmentControlContainerView = UIView()
   
-  private var prioritySegmentedControl: UISegmentedControl
+  private var taskPrioritySegmentControl: UISegmentedControl
 
   private let listTableView = UITableView()
   
@@ -26,7 +26,7 @@ final class TodoListViewController: UIViewController {
   
   init(viewModel: TodoListViewModel = TodoListViewModel()) {
     self.viewModel = viewModel
-    self.prioritySegmentedControl = UISegmentedControl(items: viewModel.segmentControlTitles())
+    self.taskPrioritySegmentControl = UISegmentedControl(items: viewModel.segmentControlTitles())
     super.init(nibName: nil, bundle: nil)
     
     viewModel.filteredTaskList.subscribe(onNext: { [weak self] _ in
@@ -54,12 +54,12 @@ final class TodoListViewController: UIViewController {
     addTaskBarButton.action = #selector(addTaskTapped)
     navigationItem.rightBarButtonItem = addTaskBarButton
 
-    prioritySegmentedControl.backgroundColor = .systemGray5
-    prioritySegmentedControl.resetSelectedSegmentToFirstIndex()
-    prioritySegmentedControl.setTitleTextAttributes([NSAttributedString.Key.foregroundColor : UIColor.systemRed], for: .normal)
-    prioritySegmentedControl.addTarget(self, action: #selector(segmentedControlTapped), for: .valueChanged)
+    taskPrioritySegmentControl.backgroundColor = .systemGray5
+    taskPrioritySegmentControl.resetSelectedSegmentToFirstIndex()
+    taskPrioritySegmentControl.setTitleTextAttributes([NSAttributedString.Key.foregroundColor : UIColor.systemRed], for: .normal)
+    taskPrioritySegmentControl.addTarget(self, action: #selector(segmentedControlTapped), for: .valueChanged)
     segmentControlContainerView.translatesAutoresizingMaskIntoConstraints = false
-    prioritySegmentedControl.translatesAutoresizingMaskIntoConstraints = false
+    taskPrioritySegmentControl.translatesAutoresizingMaskIntoConstraints = false
     
     listTableView.delegate = self
     listTableView.dataSource = self
@@ -67,7 +67,7 @@ final class TodoListViewController: UIViewController {
     listTableView.backgroundColor = .white
     listTableView.translatesAutoresizingMaskIntoConstraints = false
     
-    segmentControlContainerView.addSubview(prioritySegmentedControl)
+    segmentControlContainerView.addSubview(taskPrioritySegmentControl)
     view.addSubview(segmentControlContainerView)
     view.addSubview(listTableView)
 
@@ -76,11 +76,11 @@ final class TodoListViewController: UIViewController {
       segmentControlContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
       segmentControlContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
       
-      prioritySegmentedControl.topAnchor.constraint(equalTo: segmentControlContainerView.topAnchor, constant: 8),
-      prioritySegmentedControl.leadingAnchor.constraint(equalTo: segmentControlContainerView.leadingAnchor, constant: 16),
-      prioritySegmentedControl.trailingAnchor.constraint(equalTo: segmentControlContainerView.trailingAnchor, constant: -16),
-      prioritySegmentedControl.bottomAnchor.constraint(equalTo: segmentControlContainerView.bottomAnchor, constant: -8),
-      prioritySegmentedControl.heightAnchor.constraint(equalToConstant: 25),
+      taskPrioritySegmentControl.topAnchor.constraint(equalTo: segmentControlContainerView.topAnchor, constant: 8),
+      taskPrioritySegmentControl.leadingAnchor.constraint(equalTo: segmentControlContainerView.leadingAnchor, constant: 16),
+      taskPrioritySegmentControl.trailingAnchor.constraint(equalTo: segmentControlContainerView.trailingAnchor, constant: -16),
+      taskPrioritySegmentControl.bottomAnchor.constraint(equalTo: segmentControlContainerView.bottomAnchor, constant: -8),
+      taskPrioritySegmentControl.heightAnchor.constraint(equalToConstant: 25),
       
       listTableView.topAnchor.constraint(equalTo: segmentControlContainerView.bottomAnchor),
       listTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -99,7 +99,7 @@ final class TodoListViewController: UIViewController {
   
   // MARK: - Selector Methods
   @objc private func segmentedControlTapped() {
-    viewModel.filterTasks(prioritySegmentSelected: prioritySegmentedControl.selectedSegmentIndex)
+    viewModel.filterTasks(prioritySegmentSelected: taskPrioritySegmentControl.selectedSegmentIndex)
   }
 
   @objc private func addTaskTapped() {
@@ -108,7 +108,7 @@ final class TodoListViewController: UIViewController {
     addTaskVC.taskSubjectObservable.subscribe(onNext: { [weak self] task in
       guard let self else { return }
       self.viewModel.addTask(task)
-      self.prioritySegmentedControl.resetSelectedSegmentToFirstIndex()
+      self.taskPrioritySegmentControl.resetSelectedSegmentToFirstIndex()
     }).disposed(by: disposeBag)
     
     present(addTaskVC, animated: true, completion: nil)
@@ -120,7 +120,7 @@ extension TodoListViewController: UITableViewDelegate {
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     let header = TodoListPriorityHeader()
     header.title = viewModel.getSegmentControlTitle(
-      for: prioritySegmentedControl.selectedSegmentIndex
+      for: taskPrioritySegmentControl.selectedSegmentIndex
     )
     return header
   }

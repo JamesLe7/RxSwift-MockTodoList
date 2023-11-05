@@ -74,45 +74,36 @@ class AddTaskViewController: UIViewController {
     
     title = viewModel.title
     view.backgroundColor = .white
+    
     cancelButton.addTarget(self, action: #selector(cancelPressed), for: .touchUpInside)
     doneButton.addTarget(self, action: #selector(donePressed), for: .touchUpInside)
-    inputTaskTextField.addTarget(self,action: #selector(handleTextField), for: .editingChanged)
-    configureUI()
+    
+    inputTaskTextField.delegate = self
+    inputTaskTextField.addTarget(self,action: #selector(validateTextField), for: .editingChanged)
+
+    view.addSubview(cancelButton)
+    view.addSubview(doneButton)
+    view.addSubview(prioritySegementedControl)
+    view.addSubview(inputTaskTextField)
+
+    NSLayoutConstraint.activate([
+      cancelButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 15),
+      cancelButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
+      
+      doneButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 15),
+      doneButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
+      
+      prioritySegementedControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+      prioritySegementedControl.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+      
+      inputTaskTextField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.70),
+      inputTaskTextField.heightAnchor.constraint(equalTo: inputTaskTextField.widthAnchor, multiplier: 0.10),
+      inputTaskTextField.topAnchor.constraint(equalTo: prioritySegementedControl.bottomAnchor, constant: 15),
+      inputTaskTextField.centerXAnchor.constraint(equalTo: prioritySegementedControl.centerXAnchor),
+    ])
   }
   
   // MARK: - Helper Methods
-  
-  private func configureUI() {
-    configureTopButtons()
-    configureSegmentedControl()
-    configureTextField()
-  }
-  
-  private func configureTopButtons() {
-    view.addSubview(cancelButton)
-    cancelButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 15).isActive = true
-    cancelButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15).isActive = true
-    
-    view.addSubview(doneButton)
-    doneButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 15).isActive = true
-    doneButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15).isActive = true
-  }
-  
-  private func configureSegmentedControl() {
-    view.addSubview(prioritySegementedControl)
-    prioritySegementedControl.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-    prioritySegementedControl.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-  }
-  
-  private func configureTextField() {
-    view.addSubview(inputTaskTextField)
-    inputTaskTextField.delegate = self
-    inputTaskTextField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.70).isActive = true
-    inputTaskTextField.heightAnchor.constraint(equalTo: inputTaskTextField.widthAnchor, multiplier: 0.10).isActive = true
-    inputTaskTextField.topAnchor.constraint(equalTo: prioritySegementedControl.bottomAnchor, constant: 15).isActive = true
-    inputTaskTextField.centerXAnchor.constraint(equalTo: prioritySegementedControl.centerXAnchor).isActive = true
-  }
-  
   private func resetInputFields() {
     inputTaskTextField.text = ""
     doneButton.isEnabled = false
@@ -139,7 +130,7 @@ class AddTaskViewController: UIViewController {
     }
   }
   
-  @objc private func handleTextField() {
+  @objc private func validateTextField() {
     guard let inputTaskFieldIsReallyEmpty = inputTaskTextField.text?.isReallyEmpty else {
       return
     }
