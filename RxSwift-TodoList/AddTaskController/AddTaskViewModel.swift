@@ -15,7 +15,7 @@ final class AddTaskViewModel {
   private let segmentedControlTitles = TaskPriority.segmentedControlTitles
   
   init() {}
-  
+
   func getSegementedControlTitles() -> [String] {
     return segmentedControlTitles
   }
@@ -25,5 +25,12 @@ final class AddTaskViewModel {
       return nil
     }
     return TaskPriority(rawValue: segmentedControlTitles[segmentIndex])
+  }
+
+  func isTextFieldInputValid(_ text: String?) -> Bool {
+    guard let textIsReallyEmpty = text?.isReallyEmpty else {
+      return false
+    }
+    return !textIsReallyEmpty
   }
 }

@@ -1,5 +1,5 @@
 //
-//  CancelButton.swift
+//  ModalNavBarButton.swift
 //  RxSwift-TodoList
 //
 //  Created by James Ledesma on 11/5/23.

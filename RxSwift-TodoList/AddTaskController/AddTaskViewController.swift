@@ -16,9 +16,9 @@ class AddTaskViewController: UIViewController {
   
   private let doneButton = ModalNavBarButton(title: "Done")
   
-  private let taskPriorityControl: UISegmentedControl
+  private let taskPriorityControl: RedSegmentedControl
   
-  private let inputTaskTextField: UITextField = {
+  private let taskTextField: UITextField = {
     let textField = UITextField()
     textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 8, height: textField.frame.height))
     textField.leftViewMode = .always
@@ -40,7 +40,7 @@ class AddTaskViewController: UIViewController {
   
   init(viewModel: AddTaskViewModel = AddTaskViewModel()) {
     self.viewModel = viewModel
-    taskPriorityControl = UISegmentedControl(items: viewModel.getSegementedControlTitles())
+    taskPriorityControl = RedSegmentedControl(items: viewModel.getSegementedControlTitles())
     super.init(nibName: nil, bundle: nil)
   }
   
@@ -67,18 +67,15 @@ class AddTaskViewController: UIViewController {
     }
     doneButton.translatesAutoresizingMaskIntoConstraints = false
     
-    taskPriorityControl.backgroundColor = .systemGray5
-    taskPriorityControl.setTitleTextAttributes([NSAttributedString.Key.foregroundColor : UIColor.systemRed], for: .normal)
-    taskPriorityControl.resetSelectedSegmentToFirstIndex()
     taskPriorityControl.translatesAutoresizingMaskIntoConstraints = false
     
-    inputTaskTextField.delegate = self
-    inputTaskTextField.addTarget(self,action: #selector(validateTextField), for: .editingChanged)
+    taskTextField.delegate = self
+    taskTextField.addTarget(self,action: #selector(validateTextField), for: .editingChanged)
 
     view.addSubview(cancelButton)
     view.addSubview(doneButton)
     view.addSubview(taskPriorityControl)
-    view.addSubview(inputTaskTextField)
+    view.addSubview(taskTextField)
 
     NSLayoutConstraint.activate([
       cancelButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 15),
@@ -90,16 +87,16 @@ class AddTaskViewController: UIViewController {
       taskPriorityControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
       taskPriorityControl.centerYAnchor.constraint(equalTo: view.centerYAnchor),
       
-      inputTaskTextField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.70),
-      inputTaskTextField.heightAnchor.constraint(equalTo: inputTaskTextField.widthAnchor, multiplier: 0.10),
-      inputTaskTextField.topAnchor.constraint(equalTo: taskPriorityControl.bottomAnchor, constant: 15),
-      inputTaskTextField.centerXAnchor.constraint(equalTo: taskPriorityControl.centerXAnchor),
+      taskTextField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.70),
+      taskTextField.heightAnchor.constraint(equalTo: taskTextField.widthAnchor, multiplier: 0.10),
+      taskTextField.topAnchor.constraint(equalTo: taskPriorityControl.bottomAnchor, constant: 15),
+      taskTextField.centerXAnchor.constraint(equalTo: taskPriorityControl.centerXAnchor),
     ])
   }
   
   // MARK: - Helper Methods
   private func resetInputFields() {
-    inputTaskTextField.text = ""
+    taskTextField.text = ""
     doneButton.isEnabled = false
   }
 
@@ -111,8 +108,8 @@ class AddTaskViewController: UIViewController {
   }
 
   private func donePressed() {
-    guard let title = inputTaskTextField.text,
-          let priority = viewModel.getTaskPriority(for: taskPriorityControl.selectedSegmentIndex) else { return }
+    guard let title = taskTextField.text,
+          let priority = viewModel.getTaskPriority(for: taskPriorityControl.segmentSelected) else { return }
 
     taskSubject.onNext(Task(title: title, priority: priority))
     
@@ -123,10 +120,7 @@ class AddTaskViewController: UIViewController {
   }
   
   @objc private func validateTextField() {
-    guard let inputTaskFieldIsReallyEmpty = inputTaskTextField.text?.isReallyEmpty else {
-      return
-    }
-    doneButton.isEnabled = !inputTaskFieldIsReallyEmpty
+    doneButton.isEnabled = viewModel.isTextFieldInputValid(taskTextField.text)
   }
 }
 
