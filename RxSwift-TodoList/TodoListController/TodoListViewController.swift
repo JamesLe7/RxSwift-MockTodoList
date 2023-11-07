@@ -108,7 +108,9 @@ final class TodoListViewController: UIViewController {
     addTaskVC.taskSubjectObservable.subscribe(onNext: { [weak self] task in
       guard let self else { return }
       self.viewModel.update(.addTask(task))
-      self.taskPriorityControl.resetSelectedSegmentToFirstIndex()
+      DispatchQueue.main.async {
+        self.taskPriorityControl.resetSelectedSegmentToFirstIndex()
+      }
     }).disposed(by: disposeBag)
     
     present(addTaskVC, animated: true, completion: nil)
