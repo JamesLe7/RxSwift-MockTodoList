@@ -10,7 +10,7 @@ import RxCocoa
 import RxSwift
 
 final class TodoListViewModel {
-
+  
   let title = "Todo-List"
   private var tasks: [Task]
   private(set) var filteredTaskList: BehaviorRelay<[Task]>
@@ -26,7 +26,7 @@ final class TodoListViewModel {
     case let .addTask(task):
       tasks.append(task)
       filteredTaskList.accept(tasks)
-
+      
     case let .filterTasks(prioritySegmentSelected):
       guard let priorityTitle = getSegmentControlTitle(for: prioritySegmentSelected),
             let priority = TaskPriority(rawValue: priorityTitle) else {
@@ -35,16 +35,20 @@ final class TodoListViewModel {
       }
       let filteredTasks = tasks.filter { $0.priority == priority }
       filteredTaskList.accept(filteredTasks)
+      
+    case let .removeTask(task):
+      tasks.removeAll { $0 == task }
+      filteredTaskList.accept(tasks)
     }
   }
-
+  
   func getSegmentControlTitle(for segmentIndex: Int) -> String? {
     guard segmentIndex >= 0 && segmentIndex < segmentedControlTitles.count else {
       return nil
     }
     return segmentedControlTitles[segmentIndex]
   }
-
+  
   func segmentControlTitles() -> [String] {
     segmentedControlTitles
   }
@@ -54,7 +58,7 @@ extension TodoListViewModel {
   func numberSections() -> Int {
     1
   }
-
+  
   func numberOfRowsForSection(_ section: Int) -> Int {
     filteredTaskList.value.count
   }
@@ -68,5 +72,6 @@ extension TodoListViewModel {
   enum Action: Equatable {
     case addTask(Task)
     case filterTasks(_ prioritySegmentedSelected: Int)
+    case removeTask(Task)
   }
 }
