@@ -19,7 +19,6 @@
 		0DE72B942565B32E0006C4C6 /* TaskListTableViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE72B932565B32E0006C4C6 /* TaskListTableViewHeader.swift */; };
 		B5A942285F6F3F5E72E3F733 /* Pods_RxSwift_TodoList.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61554779160552E5915873BB /* Pods_RxSwift_TodoList.framework */; };
 		ED527D322AB6A1EA00B8CCB0 /* TodoListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED527D312AB6A1EA00B8CCB0 /* TodoListViewModel.swift */; };
-		EDCB8E892AF742DD00DB2951 /* UISegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDCB8E882AF742DD00DB2951 /* UISegmentedControl.swift */; };
 		EDCB8E8B2AF759D100DB2951 /* AddTaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDCB8E8A2AF759D100DB2951 /* AddTaskViewModel.swift */; };
 		EDCB8E902AF764B400DB2951 /* ModalNavBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDCB8E8F2AF764B400DB2951 /* ModalNavBarButton.swift */; };
 		EDCB8E922AF9F46300DB2951 /* RedSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDCB8E912AF9F46300DB2951 /* RedSegmentedControl.swift */; };
@@ -42,7 +41,6 @@
 		8B923810D43DC08C1ABDB053 /* Pods-RxSwift-TodoList.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxSwift-TodoList.release.xcconfig"; path = "Target Support Files/Pods-RxSwift-TodoList/Pods-RxSwift-TodoList.release.xcconfig"; sourceTree = "<group>"; };
 		B8B86738EF1397CD8347D129 /* Pods-RxSwift-TodoList.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxSwift-TodoList.debug.xcconfig"; path = "Target Support Files/Pods-RxSwift-TodoList/Pods-RxSwift-TodoList.debug.xcconfig"; sourceTree = "<group>"; };
 		ED527D312AB6A1EA00B8CCB0 /* TodoListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListViewModel.swift; sourceTree = "<group>"; };
-		EDCB8E882AF742DD00DB2951 /* UISegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISegmentedControl.swift; sourceTree = "<group>"; };
 		EDCB8E8A2AF759D100DB2951 /* AddTaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTaskViewModel.swift; sourceTree = "<group>"; };
 		EDCB8E8F2AF764B400DB2951 /* ModalNavBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalNavBarButton.swift; sourceTree = "<group>"; };
 		EDCB8E912AF9F46300DB2951 /* RedSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedSegmentedControl.swift; sourceTree = "<group>"; };
@@ -73,7 +71,6 @@
 			isa = PBXGroup;
 			children = (
 				0D43B98325F6B9610027CD0D /* String.swift */,
-				EDCB8E882AF742DD00DB2951 /* UISegmentedControl.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -273,7 +270,6 @@
 			files = (
 				0DB5D95D2566E26E006AAE07 /* Task.swift in Sources */,
 				0DC5952D25634D2F009348B3 /* TodoListViewController.swift in Sources */,
-				EDCB8E892AF742DD00DB2951 /* UISegmentedControl.swift in Sources */,
 				0D334EAF25648A33000E3337 /* AddTaskViewController.swift in Sources */,
 				EDCB8E902AF764B400DB2951 /* ModalNavBarButton.swift in Sources */,
 				0DE72B942565B32E0006C4C6 /* TaskListTableViewHeader.swift in Sources */,

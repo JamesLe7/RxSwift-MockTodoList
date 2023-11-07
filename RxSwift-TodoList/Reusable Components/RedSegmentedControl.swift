@@ -23,7 +23,8 @@ final class RedSegmentedControl: UIView {
 
     segmentedControl.backgroundColor = .systemGray5
     segmentedControl.setTitleTextAttributes([NSAttributedString.Key.foregroundColor : UIColor.systemRed], for: .normal)
-    segmentedControl.resetSelectedSegmentToFirstIndex()
+    resetSegmentSelectedToFirstIndex()
+    segmentedControl.addTarget(self, action: #selector(controlValueChanged), for: .valueChanged)
     segmentedControl.translatesAutoresizingMaskIntoConstraints = false
     addSubview(segmentedControl)
 
@@ -41,5 +42,9 @@ final class RedSegmentedControl: UIView {
 
   @objc private func controlValueChanged() {
     valuedChangedAction()
+  }
+
+  func resetSegmentSelectedToFirstIndex() {
+    segmentedControl.selectedSegmentIndex = 0
   }
 }
