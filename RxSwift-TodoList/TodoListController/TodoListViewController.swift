@@ -28,10 +28,6 @@ final class TodoListViewController: UIViewController {
     self.viewModel = viewModel
     taskPriorityControl = UISegmentedControl(items: viewModel.segmentControlTitles())
     super.init(nibName: nil, bundle: nil)
-    
-    viewModel.filteredTaskList.subscribe(onNext: { [weak self] _ in
-      self?.reloadTableView()
-    }).disposed(by: disposeBag)
   }
   
   required init?(coder: NSCoder) {
@@ -87,6 +83,10 @@ final class TodoListViewController: UIViewController {
       listTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
       listTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
     ])
+
+    viewModel.filteredTaskList.subscribe(onNext: { [weak self] _ in
+      self?.reloadTableView()
+    }).disposed(by: disposeBag)
   }
   
   // MARK: - Helper Methods
@@ -99,7 +99,7 @@ final class TodoListViewController: UIViewController {
   
   // MARK: - Selector Methods
   @objc private func segmentedControlTapped() {
-    viewModel.filterTasks(prioritySegmentSelected: taskPriorityControl.selectedSegmentIndex)
+    viewModel.update(.filterTasks(taskPriorityControl.selectedSegmentIndex))
   }
 
   @objc private func addTaskTapped() {
@@ -107,7 +107,7 @@ final class TodoListViewController: UIViewController {
 
     addTaskVC.taskSubjectObservable.subscribe(onNext: { [weak self] task in
       guard let self else { return }
-      self.viewModel.addTask(task)
+      self.viewModel.update(.addTask(task))
       self.taskPriorityControl.resetSelectedSegmentToFirstIndex()
     }).disposed(by: disposeBag)
     

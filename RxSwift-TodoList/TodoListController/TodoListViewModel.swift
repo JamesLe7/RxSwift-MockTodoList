@@ -21,6 +21,23 @@ final class TodoListViewModel {
     filteredTaskList = BehaviorRelay(value: tasks)
   }
   
+  func update(_ action: Action) {
+    switch action {
+    case let .addTask(task):
+      tasks.append(task)
+      filteredTaskList.accept(tasks)
+
+    case let .filterTasks(prioritySegmentSelected):
+      guard let priorityTitle = getSegmentControlTitle(for: prioritySegmentSelected),
+            let priority = TaskPriority(rawValue: priorityTitle) else {
+        filteredTaskList.accept(tasks)
+        return
+      }
+      let filteredTasks = tasks.filter { $0.priority == priority }
+      filteredTaskList.accept(filteredTasks)
+    }
+  }
+
   func getSegmentControlTitle(for segmentIndex: Int) -> String? {
     guard segmentIndex >= 0 && segmentIndex < segmentedControlTitles.count else {
       return nil
@@ -30,21 +47,6 @@ final class TodoListViewModel {
 
   func segmentControlTitles() -> [String] {
     segmentedControlTitles
-  }
-
-  func addTask(_ value: Task) {
-    tasks.append(value)
-    filteredTaskList.accept(tasks)
-  }
-  
-  func filterTasks(prioritySegmentSelected: Int) {
-    guard let priorityTitle = getSegmentControlTitle(for: prioritySegmentSelected),
-          let priority = TaskPriority(rawValue: priorityTitle) else {
-      filteredTaskList.accept(tasks)
-      return
-    }
-    let filteredTasks = tasks.filter { $0.priority == priority }
-    filteredTaskList.accept(filteredTasks)
   }
 }
 
@@ -59,5 +61,12 @@ extension TodoListViewModel {
   
   func titleForRow(_ row: Int) -> String {
     filteredTaskList.value[row].title
+  }
+}
+
+extension TodoListViewModel {
+  enum Action: Equatable {
+    case addTask(Task)
+    case filterTasks(_ prioritySegmentedSelected: Int)
   }
 }

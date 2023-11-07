@@ -77,8 +77,8 @@ class AddTaskViewController: UIViewController {
     view.addSubview(inputTaskTextField)
 
     NSLayoutConstraint.activate([
-      cancelButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 15),
-      cancelButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
+//      cancelButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 15),
+//      cancelButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
       
       doneButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 15),
       doneButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
