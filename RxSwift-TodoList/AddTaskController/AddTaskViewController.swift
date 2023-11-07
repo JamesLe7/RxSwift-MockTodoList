@@ -56,11 +56,15 @@ class AddTaskViewController: UIViewController {
     title = viewModel.title
     view.backgroundColor = .white
     
-    cancelButton.addTarget(self, action: #selector(cancelPressed), for: .touchUpInside)
+    cancelButton.action = { [weak self] in
+      self?.cancelPressed()
+    }
     cancelButton.translatesAutoresizingMaskIntoConstraints = false
     
     doneButton.isEnabled = false
-    doneButton.addTarget(self, action: #selector(donePressed), for: .touchUpInside)
+    doneButton.action = { [weak self] in
+      self?.donePressed()
+    }
     doneButton.translatesAutoresizingMaskIntoConstraints = false
     
     taskPriorityControl.backgroundColor = .systemGray5
@@ -77,8 +81,8 @@ class AddTaskViewController: UIViewController {
     view.addSubview(inputTaskTextField)
 
     NSLayoutConstraint.activate([
-//      cancelButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 15),
-//      cancelButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
+      cancelButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 15),
+      cancelButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
       
       doneButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 15),
       doneButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
@@ -98,17 +102,15 @@ class AddTaskViewController: UIViewController {
     inputTaskTextField.text = ""
     doneButton.isEnabled = false
   }
-  
-  // MARK: - Selector Methods
-  
-  @objc private func cancelPressed() {
+
+  private func cancelPressed() {
     dismiss(animated: true) { [weak self] in
       guard let self else { return }
       self.resetInputFields()
     }
   }
-  
-  @objc private func donePressed() {
+
+  private func donePressed() {
     guard let title = inputTaskTextField.text,
           let priority = viewModel.getTaskPriority(for: taskPriorityControl.selectedSegmentIndex) else { return }
 
