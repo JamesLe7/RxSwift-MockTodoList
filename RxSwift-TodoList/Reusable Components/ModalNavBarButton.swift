@@ -29,8 +29,8 @@ final class ModalNavBarButton: UIView {
     button.tintColor = .systemRed
     button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
     button.translatesAutoresizingMaskIntoConstraints = false
-    
     addSubview(button)
+
     NSLayoutConstraint.activate([
       button.leadingAnchor.constraint(equalTo: leadingAnchor),
       button.topAnchor.constraint(equalTo: topAnchor),
